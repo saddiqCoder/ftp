@@ -1,0 +1,10 @@
+.progress {
+    height: 20px !important;
+}
+.progress-bar {
+    background-color: gray !important;
+    color: white;
+}
+.btn-close{
+    padding: 12px !important;
+}
