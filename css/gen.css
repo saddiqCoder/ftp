@@ -1,0 +1,182 @@
+html{
+  background-image: url('../img/bg.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  scroll-behavior: smooth;
+}
+
+body{
+	/* background-color: red; */
+	font-size: 100%;
+	max-width: 100%;
+	max-height: 100%;
+	overflow-x: hidden;
+  overflow-y: scroll;
+	font-family: Verdana,sans-serif;
+}
+
+*,ul,a,*::before,*::after{
+	padding: 0px;
+	margin:0px;
+	box-sizing: border-box;
+	/* font-size: 14px; */
+	text-decoration: none;
+	list-style-type: none;
+	/* width: 100%; */
+	word-break: break-word;
+  max-width: 100%;
+}
+
+div.row, div.container{
+	max-width: 100%;
+	height:auto;
+}
+
+div.row::before, div.row::after, .container::before, .container::after{
+  content: "";
+  clear: both;
+  display: table;
+}
+
+input,img,div,textarea{
+	max-width: 100%;
+	outline: none;
+}
+
+/* For mobile phones: */
+[class*="col-"] {
+  width: 100%;
+  height: auto;
+}
+
+.msgbox{
+  font-size: 11px;
+  color: red;
+  font-weight: bold;
+  display: block;
+  padding: 2px 0;
+}
+
+.card {
+  padding: 5px;
+  padding-top: 10px;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 0.5em 1em -0.125em rgba(10,10,10,.1), 0 0 0 1px rgba(10,10,10,.02);
+  /* color: #4a4a4a; */
+  max-width: 100%;
+  height: auto;
+  max-width: 100%;
+  position: relative;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.card_center{
+  margin-left: auto;
+  margin-right: auto;
+  padding: 30px;
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+.my_card_title{
+  padding: 10px;
+  background: #4CAF50;
+  color: #fff;
+  font-size: 18px;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.my_card_title_sm{
+  padding: 7px;
+  background: #4CAF50;
+  color: #fff;
+  font-size: 15px;
+  left: 0;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+  font-weight: 700;
+}
+
+
+/*---------------overall_wrapper----------------*/
+div.overall_wrapper{
+  width: 90%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+/*-------BOTTON STYLES----------*/
+.btn{
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  display: inline-block;
+  background-color: transparent;
+  cursor: pointer;
+  border: none;
+}
+
+/* ---INPUT STYLES--------- */
+.input_field{
+  padding: 7px;
+}
+
+
+
+/* devices (tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .col-t-1 {width: 8.33%;}
+  .col-t-2 {width: 16.66%;}
+  .col-t-3 {width: 25%;}
+  .col-t-4 {width: 33.33%;}
+  .col-t-5 {width: 41.66%;}
+  .col-t-6 {width: 50%;}
+  .col-t-7 {width: 58.33%;}
+  .col-t-8 {width: 66.66%;}
+  .col-t-9 {width: 75%;}
+  .col-t-10 {width: 83.33%;}
+  .col-t-11 {width: 91.66%;}
+  .col-t-12 {width: 100%;}
+}
+
+/* devices (laptops/desktops, 1024px and up) */
+@media only screen and (min-width: 1024px) {
+  .col-ld-1 {width: 8.33%;}
+  .col-ld-2 {width: 16.66%;}
+  .col-ld-3 {width: 25%;}
+  .col-ld-4 {width: 33.33%;}
+  .col-ld-5 {width: 41.66%;}
+  .col-ld-6 {width: 50%;}
+  .col-ld-7 {width: 58.33%;}
+  .col-ld-8 {width: 66.66%;}
+  .col-ld-9 {width: 75%;}
+  .col-ld-10 {width: 83.33%;}
+  .col-ld-11 {width: 91.66%;}
+  .col-ld-12 {width: 100%;}
+	
+}
+
+/* Extra large devices (large laptops and desktops, 1440px and up) */
+@media only screen and (min-width: 1440px) {
+  .col-xld-1 {width: 8.33%;}
+  .col-xld-2 {width: 16.66%;}
+  .col-xld-3 {width: 25%;}
+  .col-xld-4 {width: 33.33%;}
+  .col-xld-5 {width: 41.66%;}
+  .col-xld-6 {width: 50%;}
+  .col-xld-7 {width: 58.33%;}
+  .col-xld-8 {width: 66.66%;}
+  .col-xld-9 {width: 75%;}
+  .col-xld-10 {width: 83.33%;}
+  .col-xld-11 {width: 91.66%;}
+  .col-xld-12 {width: 100%;}
+}
+
+
