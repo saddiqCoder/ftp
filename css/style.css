@@ -1,3 +1,47 @@
+.ftpFormRoot{
+    /*background-image: linear-gradient(*/
+    /*to right bottom,*/
+    /*#090040 1%,*/
+    /*rgba(9, 0, 64, 0.51) 60%*/
+    /*);*/
+    
+    background-image: linear-gradient(to right bottom, #09004000 1%, rgb(9 0 64 / 52%) 60%);
+    padding: 10%;
+}
+
+.ftpFormContainer{ background-color: #dee2e69c !important; }
+
+.btn-close:hover {
+    color: red !important;
+}
+
+.fileIcon > i {
+    font-size: xxx-large !important;
+    color: #5b2c87;
+}
+
+.fileText > .i:nth-child(1) {
+    color: #7f7a9c;
+    font-size: 23px;
+    font-weight: 800;
+}
+
+.fileText > .i:nth-child(2) {
+    color: #3f3f89;
+    font-size: 12px;
+}
+
+.uploadForm {
+    background-color: #00000087;
+    /* color: aliceblue;
+    border-radius: 11px;
+    margin-top: 20px !important; */
+}
+
+.smallFIileIcon > i, .lbSmall {
+    color: #a7a7a7;
+}
+
 .progress {
     height: 20px !important;
 }
@@ -5,6 +49,7 @@
     background-color: gray !important;
     color: white;
 }
+
 .btn-close{
     padding: 12px !important;
 }

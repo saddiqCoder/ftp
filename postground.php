@@ -9,35 +9,35 @@
    <link rel="stylesheet" href="css/style.css"/>
 </head>
 <body>
-<div id="" class="container-fluid bg-dark-subtle p-5 ftpFormRoot">
-   <div class="contaier row p-5 card ftpFormContainer">
+<div id="" class="container-fluid ftpFormRoot">
+   <div class="contaier row card ftpFormContainer">
         <div class="uploadFormContainer card-body">
-            <div class="closeBtnContainer"><button type="button" class="btn-close" disabled aria-label="Close"></button></div>
+            <div class="closeBtnContainer text-end"><button type="button" class="btn-close"  aria-label="Close"></button></div>
             
             <div class="uploadIntro container row p-0 m-0">
-                <div class="fileIcon">
-                    <i class="fa-regular fa-file fs-5"></i>
+                <div class="fileIcon row m-0 p-0 col-1 justify-content-center align-items-center">
+                    <i class="fa-regular fa-file fs-1"></i>
                 </div>
-                <div class="fileText row">
-                    <p class="i">Upload Files</p>
-                    <p class="i">Select and upload the files of your choice</p>
+                <div class="fileText row p-0 m-0 col-9">
+                    <p class="i p-0 m-0">Upload Files</p>
+                    <p class="i p-0 m-0">Select and upload the files of your choice</p>
                 </div>
             </div>
             
-            <div class="uploadForm container p-5 m-0">
-                <div class="container row">
-                    <label class="smallFIileIcon" for="file_upload">
+            <div class="uploadForm container p-5 m-0 text-white mt-3 rounded-3">
+                <div class="container row p-0 m-0">
+                    <label class="smallFIileIcon row m-0 p-0 col-1 pe-3 align-items-start justify-content-end" for="file_upload">
                         <i class="fa-regular fa-cloud fs-5"></i>
                     </label>
-                    <p class="mainFileUpload">
-                        <label class="lb lbSmall">Choose a file or drag & drop it here</label>
-                        <label class="lb">JPEG, PNG, PDG, and MP4 formats up to 50MB</label>
-                        <input type="file" class="btn files" id="file_upload" name="file_upload" width="100%" multiple />
+                    <p class="mainFileUpload row p-0 m-0 col-9">
+                        <label class="lb lbSmall p-0 m-0">Choose a file or drag & drop it here</label>
+                        <label class="lb p-0 m-0">JPEG, PNG, PDG, and MP4 formats up to 50MB</label>
+                        <input type="file" class="btn files p-0 m-0" id="file_upload" name="file_upload" multiple />
                     </p>
                 </div>
             </div>
         
-            <div class="progress_container container p-4 mt-3 bg-opacity-25 bg-dark border border-3 border-dark-subtl rounded-3">
+            <div class="progress_container container p-4 mt-3">
                 <div class="pb-2 text-gray fs-5 fw-3">
                     <div class="spinner-border spinner-border-sm"><span class="visually-hidden">Loading...</span></div>
                     <span class="">Uploading...</span>
@@ -65,7 +65,8 @@
                     </div>
                 </div>
             </div>
-   </div>  
+        </div>  
+    </div>
 </div>
 
 <!-- FOOTER START -->
@@ -86,4 +87,4 @@
 <script src="https://kit.fontawesome.com/1f1ec3e39a.js" crossorigin="anonymous"></script>
 <script src="script/app.js"></script>
 </body>
-</htm>
+</html>
