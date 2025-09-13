@@ -53,3 +53,17 @@
 .btn-close{
     padding: 12px !important;
 }
+
+/* -----  Footer Styling Section ----- */
+.contactsContainer {
+    background-color: rgb(63 101 79);
+}
+
+.smallIconPinterest:hover{color: red; transform: scale(1.5,1.5);}
+.smallIconWhatsapp:hover{color: green; transform: scale(1.5,1.5);}
+.smallIconLinkedin:hover{color: #0056ab; transform: scale(1.5,1.5);}
+
+.contactsIcon > a > i{
+    color: white;
+    transition: all 0.5s ease;
+}

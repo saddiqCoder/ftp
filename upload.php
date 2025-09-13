@@ -10,7 +10,7 @@
 </head>
 <body>
 <div id="" class="container-fluid ftpFormRoot">
-   <div class="contaier row card ftpFormContainer">
+   <div class="contaier row card ftpFormContainer pb-4">
         <div class="uploadFormContainer card-body">
             <div class="closeBtnContainer text-end"><button type="button" class="btn-close"  aria-label="Close"></button></div>
             
@@ -32,12 +32,13 @@
                     <p class="mainFileUpload row p-0 m-0 col-9">
                         <label class="lb lbSmall p-0 m-0">Choose a file or drag & drop it here</label>
                         <label class="lb p-0 m-0">JPEG, PNG, PDG, and MP4 formats up to 50MB</label>
-                        <input type="file" class="btn files p-0 m-0" id="file_upload" name="file_upload" multiple />
+                        <button type="button" class="btn btn-secondary btn-md p-1 mt-3 mx-auto col-5">Browse File</button>
+                        <!-- <input type="botton" class="btn files p-0 m-0" id="file_upload" name="file_upload" multiple /> -->
                     </p>
                 </div>
             </div>
         
-            <div class="progress_container container p-4 mt-3">
+            <div class="progress_container container p-4 mt-3 d-none">
                 <div class="pb-2 text-gray fs-5 fw-3">
                     <div class="spinner-border spinner-border-sm"><span class="visually-hidden">Loading...</span></div>
                     <span class="">Uploading...</span>
@@ -48,7 +49,7 @@
                 </div>
             </div>
 
-            <div class="progress_status container mt-3 px-0" id="progress_status">
+            <div class="progress_status container mt-3 px-0 d-none" id="progress_status">
                 <div class="container-fluid fs-6 p-2 alert alert-danger alert-dismissible fade show d-flex align-items-center" role="alert">
                     <div>
                         <i class="fa-solid fa-triangle-exclamation"></i>
@@ -70,16 +71,16 @@
 </div>
 
 <!-- FOOTER START -->
-    <footer id="contact" class="container-fluid contactsContainer py-5">
-        <div class="bag footer-content container p-5">
-        <p class="contactsIcon p-3 text-center d-block">
-            <a href="https://www.linkedin.com/in/sadiq-abdulazeez-687a1b350?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" class="smallIcons"><i class="fa-brands fa-linkedin smallIconLinkedin fs-2"></i></a>
-            <a href="https://wa.me/08104086611" class="smallIcons"><i class="fa-brands fa-whatsapp smallIconWhatsapp fs-2"></i></a>
-            <a href="https://www.pinterest.com/akonfex/" class="smallIcons"><i class="fa-brands fa-pinterest smallIconPinterest fs-2"></i></a>
-        </p>
-        <a href="#" class="copywrite d-block text-center text-light text-decoration-none">Develop with ❤ By Sadiq</a>
-        <p class="site_date text-center d-block">2021 - <?php echo date("Y", time())?></p>
-    </div>
+    <footer id="contact" class="container-fluid contactsContainer py-5 bg-dark">
+        <div class="bag footer-content container">
+            <p class="contactsIcon text-center p-0 d-block">
+                <a href="https://www.linkedin.com/in/sadiq-abdulazeez-687a1b350?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" class="smallIcons"><i class="fa-brands fa-linkedin smallIconLinkedin fs-2"></i></a>
+                <a href="https://wa.me/08104086611" class="smallIcons"><i class="fa-brands fa-whatsapp smallIconWhatsapp fs-2"></i></a>
+                <a href="https://www.pinterest.com/akonfex/" class="smallIcons"><i class="fa-brands fa-pinterest smallIconPinterest fs-2"></i></a>
+            </p>
+            <a href="#" class="copywrite d-block text-center text-light text-decoration-none py-2">Develop with ❤ By Sadiq</a>
+            <p class="site_date text-center d-block text-white pt-3">2021 - <?php echo date("Y", time())?></p>
+        </div>
     </footer>
 <!-- FOOTER END -->
 
