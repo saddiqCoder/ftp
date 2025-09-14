@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JS File Upload Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+    }
+
+    /* Hidden file input */
+    #fileInput {
+      display: none;
+    }
+
+    /* Upload button */
+    #uploadBtn {
+      background: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: none;
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+    #uploadBtn:hover {
+      background: #0056b3;
+    }
+
+    /* Drag & drop area */
+    #dropZone {
+      border: 2px dashed #007bff;
+      border-radius: 10px;
+      padding: 30px;
+      text-align: center;
+      color: #555;
+      transition: background 0.3s;
+    }
+    #dropZone.dragover {
+      background: #e9f5ff;
+    }
+
+    /* Preview area */
+    #preview {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 120px);
+      gap: 15px;
+    }
+    .file-item {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 10px;
+      text-align: center;
+      font-size: 14px;
+      word-break: break-word;
+    }
+    .file-item img {
+      max-width: 100px;
+      max-height: 100px;
+      border-radius: 6px;
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hidden input -->
+  <input type="file" id="fileInput" multiple accept="image/*,.pdf,.txt,.doc,.docx">
+
+  <!-- Button -->
+  <button id="uploadBtn">Select File(s)</button>
+
+  <!-- Drag & Drop zone -->
+  <div id="dropZone">Or drag & drop files here</div>
+
+  <!-- Preview area -->
+  <div id="preview"></div>
+
+  <script>
+    const fileInput = document.getElementById("fileInput");
+    const uploadBtn = document.getElementById("uploadBtn");
+    const dropZone = document.getElementById("dropZone");
+    const preview = document.getElementById("preview");
+
+    // Open file explorer on button click
+    uploadBtn.addEventListener("click", () => fileInput.click());
+
+    // Handle file selection
+    fileInput.addEventListener("change", () => {
+      handleFiles(fileInput.files);
+    });
+
+    // Drag & Drop events
+    dropZone.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      dropZone.classList.add("dragover");
+    });
+
+    dropZone.addEventListener("dragleave", () => {
+      dropZone.classList.remove("dragover");
+    });
+
+    dropZone.addEventListener("drop", (e) => {
+      e.preventDefault();
+      dropZone.classList.remove("dragover");
+      handleFiles(e.dataTransfer.files);
+    });
+
+    // Handle selected files
+    function handleFiles(files) {
+      preview.innerHTML = ""; // Clear previous
+      for (let file of files) {
+        const item = document.createElement("div");
+        item.classList.add("file-item");
+
+        // If image, show preview
+        if (file.type.startsWith("image/")) {
+          const img = document.createElement("img");
+          img.src = URL.createObjectURL(file);
+          item.appendChild(img);
+        }
+
+        // Show file info
+        const info = document.createElement("p");
+        info.textContent = `${file.name} (${Math.round(file.size / 1024)} KB)`;
+        item.appendChild(info);
+
+        preview.appendChild(item);
+      }
+    }
+  </script>
+</body>
+</html>

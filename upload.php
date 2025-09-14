@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-   <title>Home</title>
+   <title>Upload</title>
    <meta charset="utf-8"/>
-   <!-- <link rel="stylesheet" href="css/gen.css"/>
-   <link rel="stylesheet" href="css/gen2.css"/> -->
    <link rel="stylesheet" href="bootstrap-5.3.8-dist/css/bootstrap.css">
    <link rel="stylesheet" href="css/style.css"/>
 </head>
@@ -29,14 +27,21 @@
                     <label class="smallFIileIcon row m-0 p-0 col-1 pe-3 align-items-start justify-content-end" for="file_upload">
                         <i class="fa-regular fa-cloud fs-5"></i>
                     </label>
-                    <p class="mainFileUpload row p-0 m-0 col-9">
-                        <label class="lb lbSmall p-0 m-0">Choose a file or drag & drop it here</label>
-                        <label class="lb p-0 m-0">JPEG, PNG, PDG, and MP4 formats up to 50MB</label>
-                        <button type="button" class="btn btn-secondary btn-md p-1 mt-3 mx-auto col-5">Browse File</button>
-                        <!-- <input type="botton" class="btn files p-0 m-0" id="file_upload" name="file_upload" multiple /> -->
-                    </p>
+                    <!-- <form action=""> -->
+                        <p class="mainFileUpload row p-0 m-0 col-9">
+                            
+                            <label class="lb lbSmall p-0 m-0">Choose a file or drag & drop it here</label>
+                            <label class="lb p-0 m-0">JPEG, PNG, PDG, and MP4 formats up to 50MB</label>
+                            <!-- Hidden input 👇👇👇 -->
+                            <input type="file" style="display:none;" class="files p-0 m-0" id="file_upload" name="file_upload" multiple />
+                            <button type="button" class="btn btn-secondary btn-md p-1 mt-3 mx-auto col-5">Browse File</button>
+                        </p>
+                    <!-- </form> -->
                 </div>
             </div>
+
+            <!-- Preview area -->
+            <div class="preview"></div>
         
             <div class="progress_container container p-4 mt-3 d-none">
                 <div class="pb-2 text-gray fs-5 fw-3">
@@ -69,6 +74,9 @@
         </div>  
     </div>
 </div>
+
+<img src="home" alt="homeIcon">
+<div class="con">bigDiv</div>
 
 <!-- FOOTER START -->
     <footer id="contact" class="container-fluid contactsContainer py-5 bg-dark">
