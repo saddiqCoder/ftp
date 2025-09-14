@@ -33,9 +33,14 @@
 
 .uploadForm {
     background-color: #00000087;
-    /* color: aliceblue;
+    transition: background 0.3s;
+    /* color: #00000075;
     border-radius: 11px;
     margin-top: 20px !important; */
+}
+
+.dragover {
+    background-color: #0000004d;
 }
 
 .smallFIileIcon > i, .lbSmall {
