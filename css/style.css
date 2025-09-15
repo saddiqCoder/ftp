@@ -73,7 +73,7 @@ div.preview {
     height: 20px !important;
 }
 .progress-bar {
-    background-color: gray !important;
+    background-color: gray;
     color: white;
 }
 

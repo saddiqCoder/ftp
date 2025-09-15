@@ -24,24 +24,26 @@ function toConsole (elemnt){
 }
 
 
-function showMsg(parent, status, msg){
-    errorMsg = `
-        <div class="container progress_status_container ${status}" id="progress_status_container" >
-        <div class="progress_status file_status_fail"> ${msg} </div>
-        </div>
-    `;
-
-    byId(parent).innerHTML = errorMsg;
-
-    setTimeout(function(){
-        byId(parent).innerHTML = "";
-    }, 3000);
+function showMsg(status, msg){
+    let getAlert = byQuery('.alert');
+    getAlert.classList.remove('.d-none');
+    getAlert.classList.add(status);
+    getAlert.querySelector('span.msg').textContent = msg;
 }
 
+// Getting some UI Element 
 let btnFile = byQuery(".files");
 let btnBrowseFile = byQuery(".mainFileUpload [type='button']");
 let dropBox = byQuery(".uploadForm");
 let preview = byQuery(".preview");
+const progressStatus = byId("progress_status");
+const progressBar = byQuery(".progress-bar");
+
+let fileFormat = [
+    'image/jpeg', 'image/png', 
+    'audio/mpeg', 
+    'video/mp4', 'video/x-matroska', 'video/quicktime', 'video/avi'
+];
 
 // Opening file Explorer when user click on Browse File Btn
 btnBrowseFile.addEventListener("click", (e) => {
@@ -97,169 +99,153 @@ function handleFiles(files) {
     // creating and object of formData to hold file and details submitted
     let form_data = new FormData();
 
-}
-
-// Getting and checking if the Post Btn is click
-byId('Post_files').onclick = function (evnt){
-
-    // creating and object of formData to hold file and details submitted
-    let form_data = new FormData();
-    
     // initializing some variable 
-    let image_number = 1;
+    let file_items_counter = 1;
     let errorMsg = '';
 
-    // Getting some UI Element 
-    const progressStatus = byId("progress_status");
-    const progressBarCon = byQuery(".progress_status_container");
 
-    // Getting and checking if the Post Btn is click and making sure file is not empty
-    if (byId('file_upload').files.length > 0){
+    // Making sure that user has selected file before uploading
+    if (btnFile.files.length > 0){
 
-        for (let count = 0; count < byId('file_upload').files.length; count++){
+        for (let count = 0; count < btnFile.files.length; count++){
 
-            if (!['image/jpeg', 'image/png', "audio/mpeg","video/mp4", "video/x-matroska", "video/quicktime", "video/avi" ].includes(
-                byId('file_upload').files[count].type)
-            ){    
-                showMsg('progress_status', 'file_status_fail', 'Invalid Image, video OR audio format. Uploading Fail');
-                byId('file_upload').value = '';
-                errorMsg = true;
-                //return false;
+            if (!fileFormat.includes(btnFile.files[count].type)){    
+                showMsg('alert-danger','Invalid Image, video OR audio format. Uploading Fail');
+                btnFile.value = '';
             }else{
-                form_data.append("images[]", byId('file_upload').files[count]);
-                // showMsg('progress_status', 'file_status_success', 'File Uploaded Successfuly');
+                form_data.append("uploadedFiles[]", btnFile.files[count]);
+                showMsg('alert-success', `${btnFile.files[count].name} added Successfully`);
                 // form_data.forEach(function(elemnt){
                 //     toConsole(elemnt);
                 // });
-
-                toConsole(byId('file_upload').files[count]);
+                toConsole(btnFile.files[count]);
             }
-
-            image_number++;
+            toConsole(btnFile.files[count]);
+            file_items_counter++;
         }
 
+        // If errorMsg is not empty, then there is an error
         if (errorMsg !== ''){
-            showMsg('progress_status', 'file_status_fail', 'Oops..Inappropraite File Format');
-            byId('file_upload').value = '';
+            showMsg('alert-danger', 'Oops... File Format Not Supported. Uploading Fail');
+            btnFile.value = '';
         }else{
-            
-            byId('progress_bar_container').style.display = "block";
+
+            // Show the progress bar
+            byQuery('.progress_container').classList.remove('d-none');
+            byQuery('.progress_container').classList.add('d-block');
+
+            // Ajax request to upload file to server
             const xmlrequest = new XMLHttpRequest();
-            xmlrequest.open('POST', 'post.php', true);
-            xmlrequest.upload.addEventListener('progress', function (evnt){
+            xmlrequest.open('POST', 'ftp.php', true);
+            xmlrequest.upload.addEventListener('progress', (resp) =>{
                 // console.log(JSON.parse(this.responseText));
-                let percent_complete = Math.round((evnt.loaded / evnt.total) * 100);
-                byId('progress_bar').style.width = `${percent_complete}%`;
-                byId('progress_bar').style.backgroundColor =  `${percent_complete}%` == '100%' ? 'green' : 'red'; 
-                byId('progress_bar').innerHTML = percent_complete + " % completed";
+                let percent_complete = Math.round((resp.loaded / resp.total) * 100);
+                progressBar.style.width = `${percent_complete}%`;
+                progressBar.style.backgroundColor =  `${percent_complete}%` == '100%' ? 'green' : 'red'; 
+                progressBar.innerHTML = percent_complete + " % completed";
 
             });
-
-            showMsg('progress_status', 'file_status_success', 'File Uploaded Successfuly');
-            byId('file_upload').value = '';
-
-            xmlrequest.addEventListener('load', function(evnt){
-                // errorMsg = `
-                // <div class="container progress_status_container file_status_success" id= "progress_status_container" >
-                //     <div class="progress_status file_status_success"> File Uploaded Successfuly </div>
-                // </div>
-                // `;
-                // progressStatus.innerHTML = errorMsg;
-                // byId('file_upload').files.value = "";
-                // console.log(JSON.parse(this.responseText));
-                // xmlrequest.onreadystatechange = function(e){
-                //     if(this.readyState == 4 && this.status == 200){
-                //         
-                //     }
-                // }
-
+            xmlrequest.upload.addEventListener('load', function(evnt){
+                console.log(JSON.parse(this.responseText));
+                xmlrequest.onreadystatechange = function(e){
+                    if(this.readyState == 4 && this.status == 200){
+                        showMsg('alert-success', `File Uploaded Successfuly`);
+                        btnFile.value = '';
+                    }
+                }
             });
-
             xmlrequest.send(form_data);
         }
 
     }else {
-        showMsg('progress_status', 'file_status_fail', 'Oops...Please select file to upload');
-        byId('file_upload').value = '';
+        showMsg('alert-danger', 'Oops...Please select file to upload');
+        btnFile.value = '';
         return false;
     }
 
 }
 
+// Getting and checking if the Post Btn is click
+// byId('Post_files').onclick = function (evnt){
+    
+    
 
-function getForm(e){
-    const filesObject = e.target.previousElementSibling.files;
-    let fileCounter = 0;
-    let number_of_file = 0;
-    let errorMsg = '';
-    let form_data = new FormData();
-    const progressStatus = document.getElementById("progress_status");
-    const progressBarCon = document.querySelector(".progress_status_container");
-    const progressBar = document.querySelector(".progress_bar");
+// }
 
-    for(fileCounter; fileCounter < filesObject.length; fileCounter++){
-        if (!['image/jpeg', 'image/png', 'audio/mpeg', 'video/mp4', 'video/x-matroska', 'video/quicktime', 'video/avi'].includes(
-            filesObject[fileCounter].type
-        )){    
-            errorMsg = `
-            <div class="container progress_status_container file_status_fail" id= "progress_status_container" >
-             <div class="progress_status file_status_fail"> Invalid Image, video OR audio format. Uploading Fail </div>
-            </div>
-             `;
-             progressStatus.innerHTML = errorMsg;
-            // console.log(msgBoxContainer);
-            // alert("Error");
-            console.log("Error");
-        }else{
-            form_data.append("files_upload[]", filesObject[fileCounter]);
-            number_of_file++;
-            // console.log(filesObject[fileCounter]);
-            console.log(form_data.getAll("files_upload"));
 
-            errorMsg = `
-            <div class="container progress_status_container file_status_success" id= "progress_status_container" >
-                <div class="progress_status file_status_success"> File Uploaded Successfuly </div>
-            </div>
-             `;
-             progressStatus.innerHTML = errorMsg;
-        }
-    }
+// function getForm(e){
+//     const filesObject = e.target.previousElementSibling.files;
+//     let fileCounter = 0;
+//     let number_of_file = 0;
+//     let errorMsg = '';
+//     let form_data = new FormData();
+//     const progressStatus = document.getElementById("progress_status");
+//     const progressBarCon = document.querySelector(".progress_status_container");
+//     const progressBar = document.querySelector(".progress_bar");
 
-    // if (errorMsg == '' && number_of_file <= 0){
-    //     msgBoxContainer.style.display = "block";
-    //     e.target.previousElementSibling.value = "";
-    //     console.log(fileList);
-    // }else{
+//     for(fileCounter; fileCounter < filesObject.length; fileCounter++){
+//         if (!['image/jpeg', 'image/png', 'audio/mpeg', 'video/mp4', 'video/x-matroska', 'video/quicktime', 'video/avi'].includes(
+//             filesObject[fileCounter].type
+//         )){    
+//             errorMsg = `
+//             <div class="container progress_status_container file_status_fail" id= "progress_status_container" >
+//              <div class="progress_status file_status_fail"> Invalid Image, video OR audio format. Uploading Fail </div>
+//             </div>
+//              `;
+//              progressStatus.innerHTML = errorMsg;
+//             // console.log(msgBoxContainer);
+//             // alert("Error");
+//             console.log("Error");
+//         }else{
+//             form_data.append("files_upload[]", filesObject[fileCounter]);
+//             number_of_file++;
+//             // console.log(filesObject[fileCounter]);
+//             console.log(form_data.getAll("files_upload"));
+
+//             errorMsg = `
+//             <div class="container progress_status_container file_status_success" id= "progress_status_container" >
+//                 <div class="progress_status file_status_success"> File Uploaded Successfuly </div>
+//             </div>
+//              `;
+//              progressStatus.innerHTML = errorMsg;
+//         }
+//     }
+
+//     // if (errorMsg == '' && number_of_file <= 0){
+//     //     msgBoxContainer.style.display = "block";
+//     //     e.target.previousElementSibling.value = "";
+//     //     console.log(fileList);
+//     // }else{
         
-    //     // e.target.previousElementSibling.value = "";
+//     //     // e.target.previousElementSibling.value = "";
 
-    //     const xml = new XMLHttpRequest();
-    //     xml.open("POST", "post.php");
-    //     xml.upload.addEventListener("progress", function(e){
-    //         progressBarCon.style.display = "block";
-    //         const thiss = e;
-    //         let upload_status = Math.round((thiss.loaded / thiss.total) * 100);
-    //         progressBar.style.width = upload_status +  " %";
-    //         console.log(upload_status);
-    //         // xml.onreadystatechange = function(e){
-    //         //     if(this.readyState == 4 && this.status == 200){
-    //         //             // if (){
-    //         //             let upload_status = Math.round(thiss.loaded / thiss.total * 100); 
-    //         //             progressBar.style.width = upload_status + " %";
-    //         //             progressBar.style.innerHTML = upload_status + " % Completed";
-    //         //             // }else{
+//     //     const xml = new XMLHttpRequest();
+//     //     xml.open("POST", "post.php");
+//     //     xml.upload.addEventListener("progress", function(e){
+//     //         progressBarCon.style.display = "block";
+//     //         const thiss = e;
+//     //         let upload_status = Math.round((thiss.loaded / thiss.total) * 100);
+//     //         progressBar.style.width = upload_status +  " %";
+//     //         console.log(upload_status);
+//     //         // xml.onreadystatechange = function(e){
+//     //         //     if(this.readyState == 4 && this.status == 200){
+//     //         //             // if (){
+//     //         //             let upload_status = Math.round(thiss.loaded / thiss.total * 100); 
+//     //         //             progressBar.style.width = upload_status + " %";
+//     //         //             progressBar.style.innerHTML = upload_status + " % Completed";
+//     //         //             // }else{
 
-    //         //             // }
+//     //         //             // }
 
-    //         //             // console.log(JSON.parse(this.responseText));
+//     //         //             // console.log(JSON.parse(this.responseText));
 
-    //         //     }
-    //         // }
-    //     });
+//     //         //     }
+//     //         // }
+//     //     });
 
-    //     xml.send(form_data, true);
-    // }
+//     //     xml.send(form_data, true);
+//     // }
 
 
-    e.preventDefault();
-}
+//     e.preventDefault();
+// }

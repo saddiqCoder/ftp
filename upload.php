@@ -12,19 +12,11 @@
         <div class="uploadFormContainer card-body">
             <div class="closeBtnContainer text-end"><button type="button" class="btn-close"  aria-label="Close"></button></div>
 
-            <div class="progress_status container mt-3 px-0 d-none" id="progress_status">
-                <div class="container-fluid fs-6 p-2 alert alert-danger alert-dismissible fade show d-flex align-items-center" role="alert">
-                    <div>
-                        <i class="fa-solid fa-triangle-exclamation"></i>
-                        An example success alert with an icon
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                </div>
-
-                <div class="container-fluid fs-6 p-2 alert alert-success alert-dismissible fade show d-flex align-items-center" role="alert">
+            <div class="progress_status container mt-3 px-0" id="progress_status">
+                <div class="container-fluid fs-6 p-2 d-none alert alert-success alert-dismissible fade show d-flex align-items-center" role="alert">
                     <div>
                         <i class="fa-solid fa-check"></i>
-                        An example success alert with an icon
+                        <span class="msg">An example success alert with an icon</span>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 </div>
@@ -50,7 +42,7 @@
                             <label class="lb lbSmall p-0 m-0">Choose a file or drag & drop it here</label>
                             <label class="lb p-0 m-0">JPEG, PNG, PDG, and MP4 formats up to 50MB</label>
                             <!-- Hidden input 👇👇👇 -->
-                            <input type="file" style="display:none;" class="files p-0 m-0" id="file_upload" name="file_upload" multiple />
+                            <input type="file" style="display:none;" class="files p-0 m-0" id="file_upload" name="files_upload" multiple />
                             <button type="button" class="btn btn-secondary btn-md p-1 mt-3 mx-auto col-5">Browse File</button>
                         </p>
                     <!-- </form> -->
@@ -64,7 +56,7 @@
                 </div>
 
                 <div class="progress">
-                <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="width: 90%">25%</div>
+                <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 10%">0%</div>
                 </div>
             </div>
 
