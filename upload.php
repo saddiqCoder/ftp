@@ -82,6 +82,6 @@
 
 <script src="bootstrap-5.3.8-dist/js/bootstrap.js"></script>
 <!-- <script src="https://kit.fontawesome.com/1f1ec3e39a.js" crossorigin="anonymous"></script> -->
-<script src="script/app.js"></script>
+<script src="script/appTest.js"></script>
 </body>
 </html>

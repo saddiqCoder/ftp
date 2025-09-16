@@ -113,14 +113,13 @@ function handleFiles(files) {
                 showMsg('alert-danger','Invalid Image, video OR audio format. Uploading Fail');
                 btnFile.value = '';
             }else{
-                form_data.append("uploadedFiles[]", btnFile.files[count]);
+                form_data.append("uploadedFiles", btnFile.files[count]);
                 showMsg('alert-success', `${btnFile.files[count].name} added Successfully`);
                 // form_data.forEach(function(elemnt){
                 //     toConsole(elemnt);
                 // });
                 toConsole(btnFile.files[count]);
             }
-            toConsole(btnFile.files[count]);
             file_items_counter++;
         }
 

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP Upload Limit Fix</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        header {
+            background: #4b6cb7;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .error-box {
+            background: #ffecec;
+            border-left: 5px solid #ff5252;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 1.1rem;
+        }
+        
+        .solution-section {
+            margin: 30px 0;
+        }
+        
+        h2 {
+            color: #4b6cb7;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #eaeaea;
+        }
+        
+        p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        
+        .code-comment {
+            color: #75715e;
+        }
+        
+        .important {
+            background: #fff9e6;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .steps {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .steps li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        .upload-demo {
+            background: #f9f9f9;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .upload-btn {
+            background: #4b6cb7;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 15px;
+        }
+        
+        .upload-btn:hover {
+            background: #3a5999;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                border-radius: 10px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>PHP File Upload Size Limit Error</h1>
+            <p class="subtitle">How to fix the "POST Content-Length exceeds the limit" error</p>
+        </header>
+        
+        <div class="content">
+            <p>When uploading files in PHP, you might encounter the following error:</p>
+            
+            <div class="error-box">
+                <b>Warning</b>: POST Content-Length of 44380073 bytes exceeds the limit of 8388608 bytes in <b>Unknown</b> on line <b>0</b>
+            </div>
+            
+            <p>This error occurs when you try to upload a file that exceeds PHP's configured maximum upload size.</p>
+            
+            <div class="solution-section">
+                <h2>How to Fix This Error</h2>
+                <p>You need to increase PHP's file upload limits by modifying your PHP configuration. Here are the main directives you need to change:</p>
+                
+                <div class="code-block">
+                    <span class="code-comment">; Maximum allowed size for uploaded files</span><br>
+                    upload_max_filesize = 64M<br><br>
+                    
+                    <span class="code-comment">; Must be greater than or equal to upload_max_filesize</span><br>
+                    post_max_size = 64M<br><br>
+                    
+                    <span class="code-comment">; Maximum execution time for each script (in seconds)</span><br>
+                    max_execution_time = 300<br><br>
+                    
+                    <span class="code-comment">; Maximum input time for each script (in seconds)</span><br>
+                    max_input_time = 300<br><br>
+                    
+                    <span class="code-comment">; How many files can be uploaded at once</span><br>
+                    max_file_uploads = 20<br>
+                </div>
+            </div>
+            
+            <div class="solution-section">
+                <h2>Where to Make These Changes</h2>
+                
+                <div class="important">
+                    <p><strong>Important:</strong> The method for changing these settings depends on your server environment and whether you have access to the main PHP configuration.</p>
+                </div>
+                
+                <h3>Option 1: Modify php.ini (Recommended)</h3>
+                <p>Find your php.ini file (often located in /etc/php/ or your PHP installation directory) and update the values:</p>
+                
+                <div class="code-block">
+                    <span class="code-comment">; Locate these lines in your php.ini and change them:</span><br>
+                    upload_max_filesize = 64M<br>
+                    post_max_size = 64M<br>
+                    max_execution_time = 300<br>
+                    max_input_time = 300<br>
+                </div>
+                
+                <h3>Option 2: Use .htaccess (Apache only)</h3>
+                <p>If you're using Apache and have AllowOverride Options privileges, you can add these lines to your .htaccess file:</p>
+                
+                <div class="code-block">
+                    php_value upload_max_filesize 64M<br>
+                    php_value post_max_size 64M<br>
+                    php_value max_execution_time 300<br>
+                    php_value max_input_time 300<br>
+                </div>
+                
+                <h3>Option 3: Use ini_set() in PHP (Limited effectiveness)</h3>
+                <p>For some settings, you can use ini_set() in your PHP script, but note that upload_max_filesize and post_max_size can only be set in php.ini or .htaccess:</p>
+                
+                <div class="code-block">
+                    <span class="code-comment">// Place this at the top of your PHP script</span><br>
+                    ini_set('max_execution_time', 300);<br>
+                    ini_set('max_input_time', 300);<br>
+                    ini_set('memory_limit', '128M');<br>
+                </div>
+            </div>
+            
+            <div class="solution-section">
+                <h2>Steps to Apply Changes</h2>
+                <ol class="steps">
+                    <li>Locate your php.ini file (you can use phpinfo() to find its location)</li>
+                    <li>Edit the values for upload_max_filesize, post_max_size, and time limits</li>
+                    <li>Save the changes</li>
+                    <li>Restart your web server (Apache, Nginx, etc.) for the changes to take effect</li>
+                    <li>Verify the changes using phpinfo() or a simple PHP script that outputs ini_get('upload_max_filesize')</li>
+                </ol>
+            </div>
+            
+            <div class="upload-demo">
+                <h2>Test Your Upload Limits</h2>
+                <p>After making changes, test if your new upload limits are working:</p>
+                <button class="upload-btn" onclick="alert('In a real application, this would open a file upload dialog. The actual upload functionality requires backend PHP code.');">Test File Upload</button>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Note: The values shown are examples. Adjust them based on your specific needs and server capabilities.</p>
+        <p>© 2023 PHP Upload Limit Fix Guide</p>
+    </footer>
+</body>
+</html>
