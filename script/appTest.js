@@ -74,11 +74,44 @@ btnFile.addEventListener("change", (e) => {
     xhr.onload = () => {
       if (xhr.readyState === xhr.DONE) {
         if (xhr.status === 200) {
-          console.log(xhr.response);
+          console.log(`readyState = ${xhr.readyState} || Status = ${xhr.status}`);
           console.log(xhr.responseText);
         }
       }
     };
+
+    // xhr.addEventListener('progress', () => {
+    //     xhr.response.forEach((item) => {
+    //         toConsole(item)
+    //     });
+    // })
+
+
+    // // Show the progress bar
+    // byQuery('.progress_container').classList.remove('d-none');
+    // byQuery('.progress_container').classList.add('d-block');
+
+    // xhr.upload.addEventListener('progress', (resp) =>{
+    //     // console.log(JSON.parse(this.responseText));
+    //     let percent_complete = Math.round((resp.loaded / resp.total) * 100);
+    //     progressBar.style.width = `${percent_complete}%`;
+    //     progressBar.style.backgroundColor =  `${percent_complete}%` == '100%' ? 'green' : 'red'; 
+    //     progressBar.innerHTML = percent_complete + " % completed";
+
+    // });
+
+    // xhr.upload.addEventListener('load', function(evnt){
+        
+    //     xhr.onreadystatechange = function(e){
+    //         if(this.readyState == 4 && this.status == 200){
+    //             console.log(JSON.parse(this.responseText));
+    //             showMsg('alert-success', `File Uploaded Successfuly`);
+    //             btnFile.value = '';
+    //         }
+    //     }
+    // });
+
+
 
     xhr.send(formdata);
 

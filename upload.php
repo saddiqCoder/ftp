@@ -42,7 +42,7 @@
                             <label class="lb lbSmall p-0 m-0">Choose a file or drag & drop it here</label>
                             <label class="lb p-0 m-0">JPEG, PNG, PDG, and MP4 formats up to 50MB</label>
                             <!-- Hidden input 👇👇👇 -->
-                            <input type="file" style="display:none;" class="files p-0 m-0" id="file_upload" name="files_upload" multiple />
+                            <input type="file" style="display:none;" class="files p-0 m-0" id="file_upload" name="files_upload[]" multiple />
                             <button type="button" class="btn btn-secondary btn-md p-1 mt-3 mx-auto col-5">Browse File</button>
                         </p>
                     <!-- </form> -->

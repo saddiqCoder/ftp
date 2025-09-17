@@ -1,8 +1,34 @@
 <?php
 
+// foreach (){
 
-if(isset($_FILES['file'])){
-echo "hello";
+// }
+
+if (isset($_POST['file'])){
+    foreach($_FILES as $fileItem => $file){
+        $counter = count($file['name']);
+        
+
+        $fileName = $file['name'];
+        $fileType = $file['type'];
+        $fileSize = $file['size'];  
+        $fileTmpName = $file['tmp_name'];
+        $fileError = $file['error'];
+        
+        // $fileExt = explode('.', $fileName);
+        // $fileActualExt = strtolower(end($fileExt));
+        // $allowed = array('jpg', 'jpeg', 'png', 'pdf', 'mp4');
+
+        for($i = 0; $i < $counter; $i++){
+            echo $fileName[$i] . "<br>";
+            echo $fileType[$i] . "<br>";
+            echo $fileSize[$i] . "<br>";
+            echo $fileTmpName[$i] . "<br>";
+            echo $fileError[$i] . "<br><br>";
+        }
+
+    }
+    
 }
 
 // $msg = [];
