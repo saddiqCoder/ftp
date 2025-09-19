@@ -74,8 +74,8 @@ btnFile.addEventListener("change", (e) => {
     xhr.onload = () => {
       if (xhr.readyState === xhr.DONE) {
         if (xhr.status === 200) {
-          console.log(`readyState = ${xhr.readyState} || Status = ${xhr.status}`);
-          console.log(xhr.responseText);
+          const obj = JSON.parse(xhr.responseText);
+          console.log(obj[0]['name']);
         }
       }
     };

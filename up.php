@@ -1,4 +1,9 @@
 <?php
+$tempArray = [];
+// $tempArray[0] = ['name' => 'Sadiq', 'age' => 22, 'country' => 'Nigeria'];
+// $tempArray[1] = ['name' => 'Abdulazeez', 'age' => 25, 'country' => 'Nigeria'];
+// $tempToJson = json_encode($tempArray, true);
+// print_r(json_decode($tempToJson)[0]->name);
 
 if (isset($_POST['submit'])){
     foreach($_FILES as $fileItem => $file){
@@ -10,18 +15,23 @@ if (isset($_POST['submit'])){
         $fileSize = $file['size'];  
         $fileTmpName = $file['tmp_name'];
         $fileError = $file['error'];
-        
+
         // $fileExt = explode('.', $fileName);
         // $fileActualExt = strtolower(end($fileExt));
         // $allowed = array('jpg', 'jpeg', 'png', 'pdf', 'mp4');
 
         for($i = 0; $i < $counter; $i++){
-            echo $fileName[$i] . "<br>";
-            echo $fileType[$i] . "<br>";
-            echo $fileSize[$i] . "<br>";
-            echo $fileTmpName[$i] . "<br>";
-            echo $fileError[$i] . "<br><br>";
+            $tempArray[$i] = array(
+                "name" => $fileName[$i],
+                "type" => $fileType[$i],
+                "size" => ".$fileSize[$i].",
+                "tmp_name" => str_ireplace('\\', '/', $fileTmpName[$i]),
+                "error" => ".$fileError[$i]."
+            );
         }
+
+        $tempToJson = json_encode($tempArray, true);
+        print_r($tempToJson);
 
     }
     

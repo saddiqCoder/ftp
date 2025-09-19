@@ -1,35 +1,42 @@
 <?php
-
-// foreach (){
-
-// }
-
+// This is upload handler file
+// It will receive files from appTest.js and process it
+$tempArray = [];
 if (isset($_POST['file'])){
+
+    //handling multiple files
     foreach($_FILES as $fileItem => $file){
-        $counter = count($file['name']);
-        
+        $counter = count($file['name']);  
 
         $fileName = $file['name'];
         $fileType = $file['type'];
         $fileSize = $file['size'];  
         $fileTmpName = $file['tmp_name'];
         $fileError = $file['error'];
-        
-        // $fileExt = explode('.', $fileName);
-        // $fileActualExt = strtolower(end($fileExt));
-        // $allowed = array('jpg', 'jpeg', 'png', 'pdf', 'mp4');
 
         for($i = 0; $i < $counter; $i++){
-            echo $fileName[$i] . "<br>";
-            echo $fileType[$i] . "<br>";
-            echo $fileSize[$i] . "<br>";
-            echo $fileTmpName[$i] . "<br>";
-            echo $fileError[$i] . "<br><br>";
+           global $tempArray;
+           $tempArray[$i] = array(
+                "name" => $fileName[$i],
+                "type" => $fileType[$i],
+                "size" => ".$fileSize[$i].",
+                "tmp_name" => str_ireplace('\\', '/', $fileTmpName[$i]),
+                "error" => ".$fileError[$i]."
+            );
         }
 
+        // $tempToJson = json_encode($tempArray, true);
+        // return $tempToJson;
+
+        
     }
     
 }
+
+//$text = '[{"name":"Desktop 11-09-2025 2-11-40 am.mp4","type":"video\/mp4","size":".42896531.","tmp_name":"C:\/xampp\/tmp\/php855D.tmp","error":".0."},{"name":"Screen Shot 2025-09-11 at 01.28.34.png","type":"image\/png","size":".1483169.","tmp_name":"C:\/xampp\/tmp\/php8714.tmp","error":".0."},{"name":"Screen Shot 2025-09-11 at 01.30.04.png","type":"image\/png","size":".1446632.","tmp_name":"C:\/xampp\/tmp\/php8724.tmp","error":".0."},{"name":"Screen Shot 2025-09-11 at 01.30.47.png","type":"image\/png","size":".2288830.","tmp_name":"C:\/xampp\/tmp\/php8735.tmp","error":".0."},{"name":"Screen Shot 2025-09-11 at 01.31.02.png","type":"image\/png","size":".1730277.","tmp_name":"C:\/xampp\/tmp\/php8736.tmp","error":".0."}]';
+$tempToJson = json_encode($tempArray);
+echo $tempToJson;
+
 
 // $msg = [];
 // $msg['error'] = "true";
