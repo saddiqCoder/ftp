@@ -63,8 +63,8 @@ btnFile.addEventListener("change", (e) => {
     var documents = Array.from(e.target.files);
 
     // Appending each file to the formdata object
-    documents.forEach((file) => {
-        formdata.append(`file`, file);
+    documents.forEach((file, index) => {
+        formdata.append(`file-${index}`, file);
     });
     
     // trying to send formdata object to server using XMLHttpRequest
@@ -74,8 +74,8 @@ btnFile.addEventListener("change", (e) => {
     xhr.onload = () => {
       if (xhr.readyState === xhr.DONE) {
         if (xhr.status === 200) {
-          const obj = JSON.parse(xhr.responseText);
-          console.log(obj[0]['name']);
+          toConsole(xhr.responseText);
+        //console.log(JSON.parse(xhr.responseText));
         }
       }
     };

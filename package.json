@@ -1,0 +1,19 @@
+{
+  "name": "ftp",
+  "version": "1.0.0",
+  "description": "powerful file uploading machine",
+  "main": "upload.php",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saddiqCoder/ftp.git"
+  },
+  "author": "AlfaDev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/saddiqCoder/ftp/issues"
+  },
+  "homepage": "https://github.com/saddiqCoder/ftp#readme"
+}
