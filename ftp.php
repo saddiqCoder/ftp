@@ -2,13 +2,17 @@
 // This is upload handler file
 // It will receive files from appTest.js and process it
 
+function out ($out){
+    echo $out;
+}
+
 $tempArray = [];
 
 if (count($_FILES) > 0){
 
     // handling multiple files
     foreach($_FILES as $fileItem => $file){
-        $counter = count($file);
+        $counter = count($_FILES);
         
         $fileName = $file['name'];
         $fileType = $file['type'];
@@ -16,19 +20,18 @@ if (count($_FILES) > 0){
         $fileTmpName = $file['tmp_name'];
         $fileError = $file['error'];
 
+        $tempArray["file-".$counter] = array(
+            "name" => $fileName,
+            "type" => $fileType,
+            "size" => $fileSize,
+            "tmp_name" => str_ireplace('\\', '/', $fileTmpName),
+            "error" => $fileError
+        );
 
-        for($i = 0; $i < $counter; $i++){
-            $tempArray["file-".$i] = array(
-                "name" => $fileName[$i],
-                "type" => $fileType[$i],
-                "size" => ".$fileSize[$i].",
-                "tmp_name" => str_ireplace('\\', '/', $fileTmpName[$i]),
-                "error" => ".$fileError[$i]."
-            );
-        } 
+        $counter--;
     }
-    
-  print_r($tempArray."\n");
+
+  print_r($tempArray);
 }
 
 //print_r($tempArray);
