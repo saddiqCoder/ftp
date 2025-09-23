@@ -1,3 +1,4 @@
+// const { createElement } = require("react");
 
 function byId(elemnt){
     return document.getElementById(elemnt);
@@ -25,10 +26,36 @@ function toConsole (elemnt){
 
 
 function showMsg(status, msg){
-    let getAlert = byQuery('.alert');
-    getAlert.classList.remove('.d-none');
-    getAlert.classList.add(status);
-    getAlert.querySelector('span.msg').textContent = msg;
+    const progressStatus = byId("progress_status");
+
+    var progressDiv = document.createElement("div");
+    progressDiv.classList.add("container-fluid", "fs-6", "p-2", "alert", `${status}`, "alert-dismissible", "fade", "show", "d-flex", "align-items-center");
+    progressDiv.setAttribute("role", "alert");
+
+    var innerDiv = document.createElement("div");
+    progressDiv.appendChild(innerDiv);
+
+    var innerIcon = document.createElement("i");
+    innerIcon.classList.add("fa-solid", "fa-check");
+    innerDiv.appendChild(innerIcon);
+
+    var innerSpan = document.createElement("span");
+    innerSpan.classList.add("msg");
+    innerSpan.textContent = msg;
+    innerDiv.appendChild(innerSpan);
+
+    var btnClose = document.createElement("button");
+    btnClose.classList.add("btn-close");
+    btnClose.setAttribute("type", "button");
+    btnClose.setAttribute("data-bs-dismiss", "alert");
+    btnClose.setAttribute("aria-label", "Close");
+    innerDiv.appendChild(btnClose);
+
+    progressStatus.appendChild(progressDiv);
+    // progressDiv.classList.remove('d-none');
+    // progressDiv.classList.add('d-block');
+
+    //console.log(progressStatus.appendChild(progressDiv));
 }
 
 // Getting some UI Element 
@@ -36,7 +63,7 @@ let btnFile = byQuery(".files");
 let btnBrowseFile = byQuery(".mainFileUpload [type='button']");
 let dropBox = byQuery(".uploadForm");
 let preview = byQuery(".preview");
-const progressStatus = byId("progress_status");
+
 const progressBar = byQuery(".progress-bar");
 
 let fileFormat = [
@@ -54,7 +81,6 @@ btnBrowseFile.addEventListener("click", (e) => {
  // Handle file selection
 btnFile.addEventListener("change", (e) => {
     handleFiles(btnFile.files);
-    // console.log(e.target.files);
 });
 
  // Drag & Drop events
@@ -76,86 +102,21 @@ dropBox.addEventListener("drop", (e) => {
 
 // Handle selected files
 function handleFiles(files) {
-    preview.innerHTML = ""; // Clear previous
-    for (let file of files) {
-        const item = document.createElement("div");
-        item.classList.add("file-item");
 
-        // If image, show preview
-        if (file.type.startsWith("image/")) {
-            const img = document.createElement("img");
-            img.src = URL.createObjectURL(file);
-            item.appendChild(img);
-        }
-
-        // Show file info
-        const info = document.createElement("p");
-        info.textContent = `${file.name} (${Math.round(file.size / 1024)} KB)`;
-        item.appendChild(info);
-
-        preview.appendChild(item);
-    }
-    
-    // creating and object of formData to hold file and details submitted
-    let form_data = new FormData();
-
-    // initializing some variable 
-    let file_items_counter = 1;
-    let errorMsg = '';
-
+    // preview.innerHTML = ""; // Clear previous previews
 
     // Making sure that user has selected file before uploading
-    if (btnFile.files.length > 0){
+    if (files.length > 0){
 
-        for (let count = 0; count < btnFile.files.length; count++){
+        //Checking and Validating File before upload
+        filesValidatorHandler(files);
 
-            if (!fileFormat.includes(btnFile.files[count].type)){    
-                showMsg('alert-danger','Invalid Image, video OR audio format. Uploading Fail');
-                btnFile.value = '';
-            }else{
-                form_data.append("uploadedFiles", btnFile.files[count]);
-                showMsg('alert-success', `${btnFile.files[count].name} added Successfully`);
-                // form_data.forEach(function(elemnt){
-                //     toConsole(elemnt);
-                // });
-                toConsole(btnFile.files[count]);
-            }
-            file_items_counter++;
-        }
+        //creating Preview of the current file
+        //handleFilesPreview(files);
 
-        // If errorMsg is not empty, then there is an error
-        if (errorMsg !== ''){
-            showMsg('alert-danger', 'Oops... File Format Not Supported. Uploading Fail');
-            btnFile.value = '';
-        }else{
-
-            // Show the progress bar
-            byQuery('.progress_container').classList.remove('d-none');
-            byQuery('.progress_container').classList.add('d-block');
-
-            // Ajax request to upload file to server
-            const xmlrequest = new XMLHttpRequest();
-            xmlrequest.open('POST', 'ftp.php', true);
-            xmlrequest.upload.addEventListener('progress', (resp) =>{
-                // console.log(JSON.parse(this.responseText));
-                let percent_complete = Math.round((resp.loaded / resp.total) * 100);
-                progressBar.style.width = `${percent_complete}%`;
-                progressBar.style.backgroundColor =  `${percent_complete}%` == '100%' ? 'green' : 'red'; 
-                progressBar.innerHTML = percent_complete + " % completed";
-
-            });
-            xmlrequest.upload.addEventListener('load', function(evnt){
-                console.log(JSON.parse(this.responseText));
-                xmlrequest.onreadystatechange = function(e){
-                    if(this.readyState == 4 && this.status == 200){
-                        showMsg('alert-success', `File Uploaded Successfuly`);
-                        btnFile.value = '';
-                    }
-                }
-            });
-            xmlrequest.send(form_data);
-        }
-
+        // uploading/sending files to server (ftp.php) for uploading
+        //uploadingFiles (form_data);
+  
     }else {
         showMsg('alert-danger', 'Oops...Please select file to upload');
         btnFile.value = '';
@@ -164,87 +125,81 @@ function handleFiles(files) {
 
 }
 
-// Getting and checking if the Post Btn is click
-// byId('Post_files').onclick = function (evnt){
-    
-    
+function filesValidatorHandler (files){
+    // creating object of formData to hold file and details submitted
+        let form_data = new FormData();
 
-// }
+        for (let count = 0; count < files.length; count++){
 
+            if (!fileFormat.includes(files[count].type)){    
+                showMsg('alert-danger',`${files[count].name} file type is not supported. Not Uploaded`);
+            }else{
+                //form_data.append("uploadedFiles", files[count]);
+                    showMsg('alert-success', `${files[count].name} added Successfully`);
+                //end if file type is valid
 
-// function getForm(e){
-//     const filesObject = e.target.previousElementSibling.files;
-//     let fileCounter = 0;
-//     let number_of_file = 0;
-//     let errorMsg = '';
-//     let form_data = new FormData();
-//     const progressStatus = document.getElementById("progress_status");
-//     const progressBarCon = document.querySelector(".progress_status_container");
-//     const progressBar = document.querySelector(".progress_bar");
+                // creating Preview of the current file
+                    handleFilesPreview (files[count]);
+                //end creating Preview of the current file
 
-//     for(fileCounter; fileCounter < filesObject.length; fileCounter++){
-//         if (!['image/jpeg', 'image/png', 'audio/mpeg', 'video/mp4', 'video/x-matroska', 'video/quicktime', 'video/avi'].includes(
-//             filesObject[fileCounter].type
-//         )){    
-//             errorMsg = `
-//             <div class="container progress_status_container file_status_fail" id= "progress_status_container" >
-//              <div class="progress_status file_status_fail"> Invalid Image, video OR audio format. Uploading Fail </div>
-//             </div>
-//              `;
-//              progressStatus.innerHTML = errorMsg;
-//             // console.log(msgBoxContainer);
-//             // alert("Error");
-//             console.log("Error");
-//         }else{
-//             form_data.append("files_upload[]", filesObject[fileCounter]);
-//             number_of_file++;
-//             // console.log(filesObject[fileCounter]);
-//             console.log(form_data.getAll("files_upload"));
+                // Appending the current file to form_data object
+                    form_data.append(`file-${count}`, files[count]);
+                toConsole(form_data.getAll(`file-${count}`));
+            }
+        }
+}
 
-//             errorMsg = `
-//             <div class="container progress_status_container file_status_success" id= "progress_status_container" >
-//                 <div class="progress_status file_status_success"> File Uploaded Successfuly </div>
-//             </div>
-//              `;
-//              progressStatus.innerHTML = errorMsg;
-//         }
-//     }
+function handleFilesPreview (file){
+        const item = document.createElement("div");
+        item.classList.add("file-item");
 
-//     // if (errorMsg == '' && number_of_file <= 0){
-//     //     msgBoxContainer.style.display = "block";
-//     //     e.target.previousElementSibling.value = "";
-//     //     console.log(fileList);
-//     // }else{
-        
-//     //     // e.target.previousElementSibling.value = "";
+        // If image, show preview
+            if (file.type.startsWith("image/")) {
+                const img = document.createElement("img");
+                img.src = URL.createObjectURL(file);
+                item.appendChild(img);
+            }
+        //end If image, show preview
 
-//     //     const xml = new XMLHttpRequest();
-//     //     xml.open("POST", "post.php");
-//     //     xml.upload.addEventListener("progress", function(e){
-//     //         progressBarCon.style.display = "block";
-//     //         const thiss = e;
-//     //         let upload_status = Math.round((thiss.loaded / thiss.total) * 100);
-//     //         progressBar.style.width = upload_status +  " %";
-//     //         console.log(upload_status);
-//     //         // xml.onreadystatechange = function(e){
-//     //         //     if(this.readyState == 4 && this.status == 200){
-//     //         //             // if (){
-//     //         //             let upload_status = Math.round(thiss.loaded / thiss.total * 100); 
-//     //         //             progressBar.style.width = upload_status + " %";
-//     //         //             progressBar.style.innerHTML = upload_status + " % Completed";
-//     //         //             // }else{
+        // Show file info
+        const info = document.createElement("p");
+        info.textContent = `${file.name} (${Math.round(file.size / 1024)} KB)`;
+        item.appendChild(info);
 
-//     //         //             // }
-
-//     //         //             // console.log(JSON.parse(this.responseText));
-
-//     //         //     }
-//     //         // }
-//     //     });
-
-//     //     xml.send(form_data, true);
-//     // }
+        preview.appendChild(item);
+}
 
 
-//     e.preventDefault();
-// }
+
+function uploadedFiles(form_data) {
+        // Show the progress bar
+        byQuery('.progress_container').classList.remove('d-none');
+        byQuery('.progress_container').classList.add('d-block');
+
+        // Ajax request to upload file to server
+        const xmlrequest = new XMLHttpRequest();
+        xmlrequest.open('POST', 'ftp.php', true);
+        xmlrequest.upload.addEventListener('progress', (resp) =>{
+            // console.log(JSON.parse(this.responseText));
+            let percent_complete = Math.round((resp.loaded / resp.total) * 100);
+            progressBar.style.width = `${percent_complete}%`;
+            progressBar.style.backgroundColor =  `${percent_complete}%` == '100%' ? 'green' : 'red'; 
+            progressBar.innerHTML = percent_complete + " % completed";
+
+        });
+
+        xmlrequest.upload.addEventListener('load', () => {
+            
+            console.log(JSON.parse(this.responseText));
+
+            xmlrequest.onreadystatechange = () => {
+                if(this.readyState == 4 && this.status == 200){
+                    showMsg('alert-success', `File Uploaded Successfuly`);
+                    btnFile.value = '';
+                } 
+            }
+
+        });
+
+        xmlrequest.send(form_data);
+}

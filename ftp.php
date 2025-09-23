@@ -9,51 +9,63 @@ function out ($out){
 $tempArray = [];
 
 if (count($_FILES) > 0){
-
+    
+    $counter = count($_FILES)-1;
+    $i = 0;
     // handling multiple files
-    foreach($_FILES as $fileItem => $file){
-        $counter = count($_FILES);
-        
-        $fileName = $file['name'];
-        $fileType = $file['type'];
-        $fileSize = $file['size'];  
-        $fileTmpName = $file['tmp_name'];
-        $fileError = $file['error'];
+    while ($i <= $counter){
 
-        $tempArray["file-".$counter] = array(
-            "name" => $fileName,
-            "type" => $fileType,
-            "size" => $fileSize,
-            "tmp_name" => str_ireplace('\\', '/', $fileTmpName),
-            "error" => $fileError
+        $fileName = $_FILES["file-".$i]['name'];
+        $fileType = $_FILES["file-".$i]['type'];
+        $fileSize = $_FILES["file-".$i]['size'];  
+        $fileTmpName = str_ireplace('\\', '/', $_FILES["file-".$i]['tmp_name']);
+        $fileError = $_FILES["file-".$i]['error'];
+
+         $tempArray["file-".$i] = array(
+            "name" => "$fileName",
+            "type" => "$fileType",
+            "size" => "$fileSize",
+            "tmp_name" => "$fileTmpName",
+            "error" => "$fileError"
         );
 
-        $counter--;
+        $i++;
     }
 
-  print_r($tempArray);
+    $tempArray["custormMsg"] = array(
+        "Msg" => "Error Free"
+    );
+
+  print_r(json_encode($tempArray));
 }
 
-//print_r($tempArray);
 
-// print_r(json_encode($tempArray, true));
-// $tempArray['file-1'] = array(
-//     "name" => 'sadiq',
-//     "size" => '123',
-//     "error" => 'bigbook.jpg is too large'
-// );
+// if (count($_FILES) > 0){
 
-// $tempArray['file-2'] = array(
-//     "name" => 'abdulazeez',
-//     "size" => '456',
-//     "error" => 'profile.png is too large'
-// );
+//     // handling multiple files
+//     foreach($_FILES as $fileItem => $file){
+//         $counter = count($_FILES);
+        
+        // $fileName = $file['name'];
+        // $fileType = $file['type'];
+        // $fileSize = $file['size'];  
+        // $fileTmpName = $file['tmp_name'];
+        // $fileError = $file['error'];
 
-// $tempArray['file-3'] = array(
-//     "name" => 'akonfex',
-//     "size" => '789',
-//     "error" => 'video.mp4 is too large'
-// );
+//         $tempArray["file-".$counter] = array(
+//             "name" => $fileName,
+//             "type" => $fileType,
+//             "size" => $fileSize,
+//             "tmp_name" => str_ireplace('\\', '/', $fileTmpName),
+//             "error" => $fileError
+//         );
+
+//         $counter--;
+//     }
+
+//   print_r($tempArray);
+// }
+
 
 
 

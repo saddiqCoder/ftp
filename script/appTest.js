@@ -71,14 +71,14 @@ btnFile.addEventListener("change", (e) => {
     const xhr = new XMLHttpRequest();
     xhr.open('POST', 'ftp.php', true);
 
-    xhr.onload = () => {
+    xhr.addEventListener('load', () => {
       if (xhr.readyState === xhr.DONE) {
         if (xhr.status === 200) {
-          toConsole(xhr.responseText);
-        //console.log(JSON.parse(xhr.responseText));
+          //toConsole(xhr.responseText);
+          toConsole(JSON.parse(xhr.responseText));
         }
       }
-    };
+    });
 
     // xhr.addEventListener('progress', () => {
     //     xhr.response.forEach((item) => {

@@ -13,13 +13,13 @@
             <div class="closeBtnContainer text-end"><button type="button" class="btn-close"  aria-label="Close"></button></div>
 
             <div class="progress_status container mt-3 px-0" id="progress_status">
-                <div class="container-fluid fs-6 p-2 d-none alert alert-success alert-dismissible fade show d-flex align-items-center" role="alert">
+                <!-- <div class="container-fluid fs-6 p-2 d-none alert alert-success alert-dismissible fade show d-flex align-items-center" role="alert">
                     <div>
                         <i class="fa-solid fa-check"></i>
                         <span class="msg">An example success alert with an icon</span>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-                </div>
+                </div> -->
             </div>
             
             <div class="uploadIntro container row p-0 m-0">
@@ -81,7 +81,7 @@
 <!-- FOOTER END -->
 
 <script src="bootstrap-5.3.8-dist/js/bootstrap.js"></script>
-<!-- <script src="https://kit.fontawesome.com/1f1ec3e39a.js" crossorigin="anonymous"></script> -->
-<script src="script/appTest.js"></script>
+<script src="https://kit.fontawesome.com/1f1ec3e39a.js" crossorigin="anonymous"></script>
+<script src="script/app.js"></script>
 </body>
 </html>
