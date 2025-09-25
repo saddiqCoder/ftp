@@ -24,6 +24,26 @@ function toConsole (elemnt){
     console.log (elemnt);
 }
 
+function creatPreviewImage(url, fileName, fileSize){
+    const item = document.createElement("div");
+    item.classList.add("file-item");
+    const img = document.createElement("img");
+
+    // Set the source of the image
+    if (typeof url === 'string') {
+        img.src = url; // For icon paths
+    } else {
+        img.src = URL.createObjectURL(url); // For File objects
+    }
+    item.appendChild(img);
+
+    // Show file info
+    const info = document.createElement("p");
+    info.textContent = `${fileName} (${Math.round(fileSize / 1024)} KB)`;
+    item.appendChild(info);
+
+    preview.appendChild(item);
+}
 
 function showMsg(status, msg){
     const progressStatus = byId("progress_status");
@@ -52,10 +72,6 @@ function showMsg(status, msg){
     innerDiv.appendChild(btnClose);
 
     progressStatus.appendChild(progressDiv);
-    // progressDiv.classList.remove('d-none');
-    // progressDiv.classList.add('d-block');
-
-    //console.log(progressStatus.appendChild(progressDiv));
 }
 
 // Getting some UI Element 
@@ -63,9 +79,9 @@ let btnFile = byQuery(".files");
 let btnBrowseFile = byQuery(".mainFileUpload [type='button']");
 let dropBox = byQuery(".uploadForm");
 let preview = byQuery(".preview");
-
 const progressBar = byQuery(".progress-bar");
 
+// Supported File Formats for upload
 let fileFormat = [
     'image/jpeg', 'image/png', 
     'audio/mpeg', 
@@ -102,25 +118,15 @@ dropBox.addEventListener("drop", (e) => {
 
 // Handle selected files
 function handleFiles(files) {
-
-    // preview.innerHTML = ""; // Clear previous previews
-
     // Making sure that user has selected file before uploading
     if (files.length > 0){
 
         //Checking and Validating File before upload
         filesValidatorHandler(files);
-
-        //creating Preview of the current file
-        //handleFilesPreview(files);
-
-        // uploading/sending files to server (ftp.php) for uploading
-        //uploadingFiles (form_data);
   
     }else {
         showMsg('alert-danger', 'Oops...Please select file to upload');
         btnFile.value = '';
-        return false;
     }
 
 }
@@ -129,58 +135,70 @@ function filesValidatorHandler (files){
     // creating object of formData to hold file and details submitted
         let form_data = new FormData();
 
-        for (let count = 0; count < files.length; count++){
+        // Looping through all files and validating them
+            for (let count = 0; count < files.length; count++){
+                // Validating file type (extension/format)
+                if (!fileFormat.includes(files[count].type)){    
+                    showMsg('alert-danger',`${files[count].name} file type is not supported. Not Uploaded`);
+                }else{
+                    //form_data.append("uploadedFiles", files[count]);
+                        showMsg('alert-success', `${files[count].name} added Successfully`);
+                    //end if file type is valid
 
-            if (!fileFormat.includes(files[count].type)){    
-                showMsg('alert-danger',`${files[count].name} file type is not supported. Not Uploaded`);
-            }else{
-                //form_data.append("uploadedFiles", files[count]);
-                    showMsg('alert-success', `${files[count].name} added Successfully`);
-                //end if file type is valid
+                    // creating Preview of the current file
+                        handleFilesPreview (files[count]);
+                    //end creating Preview of the current file
 
-                // creating Preview of the current file
-                    handleFilesPreview (files[count]);
-                //end creating Preview of the current file
-
-                // Appending the current file to form_data object
-                    form_data.append(`file-${count}`, files[count]);
-                toConsole(form_data.getAll(`file-${count}`));
+                    // Appending the current file to form_data object
+                        form_data.append(`file-${count}`, files[count]);
+                        uploadedFiles(form_data);
+                        toConsole(form_data.getAll(`file-${count}`));
+                }
             }
-        }
+        // End Looping through all files and validating them
 }
 
 function handleFilesPreview (file){
-        const item = document.createElement("div");
-        item.classList.add("file-item");
+    // Extracting file details
+        let fileType = file.type;
+        let fileName = file.name;
+        let fileSize = file.size;
+    // End Extracting file details
 
-        // If image, show preview
-            if (file.type.startsWith("image/")) {
-                const img = document.createElement("img");
-                img.src = URL.createObjectURL(file);
-                item.appendChild(img);
+        // If preview already has some child, clear it
+        // if (preview.hasChildNodes()){
+        //     preview.innerHTML = "";
+        // }
+
+        // Creating Preview of the current file
+            switch (true) {
+                case fileType.startsWith("image/"):
+                    creatPreviewImage(file, fileName, fileSize);
+                    break;
+                case fileType.startsWith("audio/"):
+                    creatPreviewImage("icon/m.png", fileName, fileSize);
+                    break;
+                case fileType.startsWith("video/"):
+                    creatPreviewImage("icon/v.png", fileName, fileSize);
+                    break;
+                default:
+                    creatPreviewImage("icon/f.png", fileName, fileSize);
             }
-        //end If image, show preview
+        // End Creating Preview of the current file
 
-        // Show file info
-        const info = document.createElement("p");
-        info.textContent = `${file.name} (${Math.round(file.size / 1024)} KB)`;
-        item.appendChild(info);
-
-        preview.appendChild(item);
 }
 
-
-
 function uploadedFiles(form_data) {
-        // Show the progress bar
-        byQuery('.progress_container').classList.remove('d-none');
-        byQuery('.progress_container').classList.add('d-block');
-
         // Ajax request to upload file to server
         const xmlrequest = new XMLHttpRequest();
+
         xmlrequest.open('POST', 'ftp.php', true);
+
         xmlrequest.upload.addEventListener('progress', (resp) =>{
             // console.log(JSON.parse(this.responseText));
+            // Show the progress bar
+            byQuery('.progress_container').classList.remove('d-none');
+            byQuery('.progress_container').classList.add('d-block');
             let percent_complete = Math.round((resp.loaded / resp.total) * 100);
             progressBar.style.width = `${percent_complete}%`;
             progressBar.style.backgroundColor =  `${percent_complete}%` == '100%' ? 'green' : 'red'; 
@@ -189,16 +207,16 @@ function uploadedFiles(form_data) {
         });
 
         xmlrequest.upload.addEventListener('load', () => {
-            
-            console.log(JSON.parse(this.responseText));
-
             xmlrequest.onreadystatechange = () => {
-                if(this.readyState == 4 && this.status == 200){
+                // console.log(xmlrequest.responseText);
+                // console.log(xmlrequest.readyState);
+                // console.log(xmlrequest.status);
+                if(xmlrequest.readyState == 4 && xmlrequest.status == 200){
+                    console.log(JSON.parse(xmlrequest.responseText));
                     showMsg('alert-success', `File Uploaded Successfuly`);
                     btnFile.value = '';
                 } 
             }
-
         });
 
         xmlrequest.send(form_data);

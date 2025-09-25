@@ -12,6 +12,7 @@ if (count($_FILES) > 0){
     
     $counter = count($_FILES)-1;
     $i = 0;
+
     // handling multiple files
     while ($i <= $counter){
 
@@ -37,7 +38,11 @@ if (count($_FILES) > 0){
     );
 
   print_r(json_encode($tempArray));
+// print_r($tempArray);
 }
+
+
+
 
 
 // if (count($_FILES) > 0){
