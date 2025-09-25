@@ -6,35 +6,48 @@ $tempArray = [];
 // print_r(json_decode($tempToJson)[0]->name);
 
 if (isset($_POST['submit'])){
-    print_r($_FILES);
-    // foreach($_FILES as $fileItem => $file){
-    //     $counter = count($file['name']);
+
+    foreach($_FILES as $fileItem => $file){
+        $counter = count($file['name']);
         
 
-    //     $fileName = $file['name'];
-    //     $fileType = $file['type'];
-    //     $fileSize = $file['size'];  
-    //     $fileTmpName = $file['tmp_name'];
-    //     $fileError = $file['error'];
+        $fileName = $file['name'];
+        $fileType = $file['type'];
+        $fileSize = $file['size'];  
+        $fileTmpName = $file['tmp_name'];
+        $fileError = $file['error'];
 
-    //     // $fileExt = explode('.', $fileName);
-    //     // $fileActualExt = strtolower(end($fileExt));
-    //     // $allowed = array('jpg', 'jpeg', 'png', 'pdf', 'mp4');
+        // $fileExt = explode('.', $fileName);
+        // $fileActualExt = strtolower(end($fileExt));
+        // $allowed = array('jpg', 'jpeg', 'png', 'pdf', 'mp4');
 
-        // for($i = 0; $i < $counter; $i++){
-        //     $tempArray[$i] = array(
-        //         "name" => $fileName[$i],
-        //         "type" => $fileType[$i],
-        //         "size" => ".$fileSize[$i].",
-        //         "tmp_name" => str_ireplace('\\', '/', $fileTmpName[$i]),
-        //         "error" => ".$fileError[$i]."
-        //     );
-        // }
+        
+            
 
-    //     $tempToJson = json_encode($tempArray, true);
-    //     print_r($tempToJson);
+        for($i = 0; $i < $counter; $i++){
+            $tempArray[$i] = array(
+                "name" => $fileName[$i],
+                "type" => $fileType[$i],
+                "size" => ".$fileSize[$i].",
+                "tmp_name" => str_ireplace('\\', '/', $fileTmpName[$i]),
+                "error" => ".$fileError[$i]."
+            );
 
-    // }
+            $ext = pathinfo($fileName[$i], PATHINFO_EXTENSION);
+            $newfilename = uniqid() . '.' . $ext;
+
+            if (move_uploaded_file($fileTmpName[$i], 'files/'.$newfilename)){
+                $tempArray[$i]['msg'] = $tempArray[$i]['name']." has been successfuly Uploaded";
+            }else{
+                $tempArray[$i]['msg'] = $tempArray[$i]['name']." Not Uploaded";
+            }
+
+        }
+
+        $tempToJson = json_encode($tempArray, true);
+        print_r($tempToJson);
+
+    }
     
 }
 

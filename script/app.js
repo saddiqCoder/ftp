@@ -1,5 +1,3 @@
-// const { createElement } = require("react");
-
 function byId(elemnt){
     return document.getElementById(elemnt);
 }
@@ -141,19 +139,20 @@ function filesValidatorHandler (files){
                 if (!fileFormat.includes(files[count].type)){    
                     showMsg('alert-danger',`${files[count].name} file type is not supported. Not Uploaded`);
                 }else{
-                    //form_data.append("uploadedFiles", files[count]);
-                        showMsg('alert-success', `${files[count].name} added Successfully`);
-                    //end if file type is valid
+                        // Validating file size (file should not be greater than 50MB)
+                        if (files[count].size > 52428800){
+                            showMsg('alert-danger',`${files[count].name} is too large. Not Uploaded`);
+                        }else{
+                            // creating Preview of the current file
+                            handleFilesPreview (files[count]);
+                        //end creating Preview of the current file
 
-                    // creating Preview of the current file
-                        handleFilesPreview (files[count]);
-                    //end creating Preview of the current file
-
-                    // Appending the current file to form_data object
-                        form_data.append(`file-${count}`, files[count]);
-                        uploadedFiles(form_data);
-                        toConsole(form_data.getAll(`file-${count}`));
-                }
+                        // Appending the current file to form_data object
+                            form_data.append(`file-${count}`, files[count]);
+                            uploadedFiles(form_data);
+                        // End Appending the current file to form_data object
+                        }
+                    }
             }
         // End Looping through all files and validating them
 }
@@ -208,13 +207,18 @@ function uploadedFiles(form_data) {
 
         xmlrequest.upload.addEventListener('load', () => {
             xmlrequest.onreadystatechange = () => {
-                // console.log(xmlrequest.responseText);
-                // console.log(xmlrequest.readyState);
-                // console.log(xmlrequest.status);
                 if(xmlrequest.readyState == 4 && xmlrequest.status == 200){
-                    console.log(JSON.parse(xmlrequest.responseText));
-                    showMsg('alert-success', `File Uploaded Successfuly`);
-                    btnFile.value = '';
+                    let response = JSON.parse(xmlrequest.responseText);
+
+                    let counter = Object.keys(response).length - 1; // Subtracting 1 to get actual number of files
+                    toConsole(counter);
+                    if (response[`file-${counter}`].error && response[`file-${counter}`].error != "0"){
+                        showMsg('alert-success', `${response[`file-${counter}`].error}`);
+                        btnFile.value = '';
+                    }else{
+                        showMsg('alert-danger', `Error Uploading File: ${response[`file-${counter}`].name}`); 
+                    }
+
                 } 
             }
         });

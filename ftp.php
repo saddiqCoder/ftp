@@ -19,23 +19,26 @@ if (count($_FILES) > 0){
         $fileName = $_FILES["file-".$i]['name'];
         $fileType = $_FILES["file-".$i]['type'];
         $fileSize = $_FILES["file-".$i]['size'];  
-        $fileTmpName = str_ireplace('\\', '/', $_FILES["file-".$i]['tmp_name']);
+        $fileTmpName = $_FILES["file-".$i]['tmp_name'];
         $fileError = $_FILES["file-".$i]['error'];
 
          $tempArray["file-".$i] = array(
             "name" => "$fileName",
-            "type" => "$fileType",
-            "size" => "$fileSize",
-            "tmp_name" => "$fileTmpName",
-            "error" => "$fileError"
+            "size" => "$fileSize"
         );
+
+        // Process each file and move to the files folder
+        $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+        $newfilename = uniqid() . '.' . $ext;
+
+        if (move_uploaded_file($fileTmpName, 'files/'.$newfilename)){
+            $tempArray["file-".$i]["error"] = $tempArray["file-".$i]['name']." has been successfuly Uploaded";
+        }else{
+            $tempArray["file-".$i]["error"] = "$fileError";
+        }
 
         $i++;
     }
-
-    $tempArray["custormMsg"] = array(
-        "Msg" => "Error Free"
-    );
 
   print_r(json_encode($tempArray));
 // print_r($tempArray);
