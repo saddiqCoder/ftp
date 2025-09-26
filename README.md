@@ -70,6 +70,7 @@ Ensure the upload directory has write permissions:
 ### 📚 Project Structure
 ftp/
 │── ftp.php              # Main upload handler (PHP)
+
 │── upload.php           # HTML frontend with Bootstrap
 │── fixFileError.php     # PHP upload limit configuration guide
 │── fileError.html       # Static HTML guide for fixing errors
