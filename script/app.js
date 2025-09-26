@@ -148,8 +148,9 @@ function filesValidatorHandler (files){
                         //end creating Preview of the current file
 
                         // Appending the current file to form_data object
-                            form_data.append(`file-${count}`, files[count]);
+                            form_data.append(`file-0`, files[count]);
                             uploadedFiles(form_data);
+                            form_data.delete(`file-0`, files[count]);
                         // End Appending the current file to form_data object
                         }
                     }
@@ -208,10 +209,10 @@ function uploadedFiles(form_data) {
         xmlrequest.upload.addEventListener('load', () => {
             xmlrequest.onreadystatechange = () => {
                 if(xmlrequest.readyState == 4 && xmlrequest.status == 200){
+                    //toConsole(xmlrequest.responseText);
                     let response = JSON.parse(xmlrequest.responseText);
 
                     let counter = Object.keys(response).length - 1; // Subtracting 1 to get actual number of files
-                    toConsole(counter);
                     if (response[`file-${counter}`].error && response[`file-${counter}`].error != "0"){
                         showMsg('alert-success', `${response[`file-${counter}`].error}`);
                         btnFile.value = '';

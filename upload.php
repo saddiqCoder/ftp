@@ -12,14 +12,7 @@
         <div class="uploadFormContainer card-body">
             <div class="closeBtnContainer text-end"><button type="button" class="btn-close"  aria-label="Close"></button></div>
 
-            <div class="progress_status container mt-3 px-0" id="progress_status">
-                <!-- <div class="container-fluid fs-6 p-2 d-none alert alert-success alert-dismissible fade show d-flex align-items-center" role="alert">
-                    <div>
-                        <i class="fa-solid fa-check"></i>
-                        <span class="msg">An example success alert with an icon</span>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                </div> -->
+            <div class="progress_status container mt-3 px-0" id="progress_status">  
             </div>
             
             <div class="uploadIntro container row p-0 m-0">
